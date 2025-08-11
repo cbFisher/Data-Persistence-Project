@@ -7,6 +7,9 @@ using TMPro;
 public class MenuUIHandler : MonoBehaviour
 {
     public TMP_InputField NameInput;
+    private string m_Text;
+
+    //public GameObject inputName;
     public void NewNameSelected(string name)
     {
         MainManager.Instance.PlayerName = name;
@@ -22,12 +25,14 @@ public class MenuUIHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     public void StartNew()
     {
-        NewNameSelected(NameInput.GetComponent<Text>().text);
+        m_Text = NameInput.text;
+
+        Debug.Log(m_Text);
+        NewNameSelected(m_Text);
         SceneManager.LoadScene(1);
     }
 
