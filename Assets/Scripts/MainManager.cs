@@ -1,27 +1,53 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO;
 
 public class MainManager : MonoBehaviour
 {
+    public static MainManager Instance { get; private set; }
+
+    public string PlayerName;
+    
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
 
     public Text ScoreText;
     public GameObject GameOverText;
+
+    public Text highScoreText;
     
     private bool m_Started = false;
     private int m_Points;
     
     private bool m_GameOver = false;
 
-    
+
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        highScoreText.text = "Best: " + PlayerName + " : ###";
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -62,6 +88,13 @@ public class MainManager : MonoBehaviour
         }
     }
 
+    [System.Serializable]
+
+    class SaveData
+    {
+        public string PlayerName;
+    }
+
     void AddPoint(int point)
     {
         m_Points += point;
@@ -73,4 +106,15 @@ public class MainManager : MonoBehaviour
         m_GameOver = true;
         GameOverText.SetActive(true);
     }
+
+  //  public void SaveName()
+  //  {
+  //      SaveData data = new SaveData();
+  //
+  //      data.PlayerName = PlayerName;
+  //
+  //      string json = JsonUtility.ToJson(data);
+  //      File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+  //
+   // }
 }
