@@ -21,7 +21,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        highScoreText.text = "Best: " + MainManager.Instance.PlayerName + " : ###";
+        MainManager.Instance.LoadBest();
+        highScoreText.text = "Best: " + MainManager.Instance.bestPlayerName + " : " + MainManager.Instance.highScore;
+
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
 
@@ -72,6 +74,15 @@ public class GameManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+
+        if (m_Points > MainManager.Instance.highScore)
+        {
+            MainManager.Instance.highScore = m_Points;
+            Debug.Log(MainManager.Instance.highScore);
+            MainManager.Instance.bestPlayerName = MainManager.Instance.currentPlayerName;
+            Debug.Log(MainManager.Instance.bestPlayerName);
+            MainManager.Instance.SaveBest();
+        }
     }
 
 }

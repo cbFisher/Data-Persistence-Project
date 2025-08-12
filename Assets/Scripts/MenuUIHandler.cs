@@ -12,7 +12,7 @@ public class MenuUIHandler : MonoBehaviour
     //public GameObject inputName;
     public void NewNameSelected(string name)
     {
-        MainManager.Instance.PlayerName = name;
+        MainManager.Instance.currentPlayerName = name;
     }
 
     
@@ -31,7 +31,7 @@ public class MenuUIHandler : MonoBehaviour
     {
         m_Text = NameInput.text;
 
-        Debug.Log(m_Text);
+        //Debug.Log(m_Text);
         NewNameSelected(m_Text);
         SceneManager.LoadScene(1);
     }
@@ -43,6 +43,6 @@ public class MenuUIHandler : MonoBehaviour
 #else
         Application.Quit();
 #endif
-        //save game
+        MainManager.Instance.SaveBest();
     }
 }

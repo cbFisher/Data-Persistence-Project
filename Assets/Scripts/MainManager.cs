@@ -11,7 +11,10 @@ public class MainManager : MonoBehaviour
 {
     public static MainManager Instance { get; private set; }
 
-    public string PlayerName;
+    public string bestPlayerName;
+    public string currentPlayerName;
+
+    public int highScore = 0;
 
     
 
@@ -30,6 +33,8 @@ public class MainManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+
+        LoadBest();
     }
 
     // Start is called before the first frame update
@@ -42,18 +47,33 @@ public class MainManager : MonoBehaviour
 
     class SaveData
     {
-        public string PlayerName;
+        public string bestPlayerName;
+
+        public int highScore;
     }
 
 
-  //  public void SaveName()
-  //  {
-  //      SaveData data = new SaveData();
-  //
-  //      data.PlayerName = PlayerName;
-  //
-  //      string json = JsonUtility.ToJson(data);
-  //      File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
-  //
-   // }
+   public void SaveBest()
+    {
+        SaveData data = new SaveData();
+  
+       data.bestPlayerName = bestPlayerName;
+        data.highScore = highScore;
+  
+       string json = JsonUtility.ToJson(data);
+       File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+    }
+
+    public void LoadBest()
+    {
+        string path = Application.persistentDataPath + "/savefile.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+
+            bestPlayerName = data.bestPlayerName;
+            highScore = data.highScore;
+        }
+    }
 }
